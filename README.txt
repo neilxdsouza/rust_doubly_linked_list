@@ -18,3 +18,5 @@ Why the double star here line 61 ?  I think it's because when we say :
      on lin 58, we are adding 1 more indirection that has to be stripped away.
 
             let raw_prev_head: * mut Link = &mut ** boxed_link;
+
+linked_list_2.cpp is the original doubly linked list that I'm suppose to be implementing first and mimicking the same code in Rust. But it looks like I have gotten a bit more confident and implemented the newer methods in Rust without using C++. I should however finish the c++ implementation to track how the c++ code corresponds to Rust. 
