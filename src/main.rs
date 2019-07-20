@@ -155,7 +155,7 @@ impl List {
             None => None,
             Some(link) => {
                 self.head = link.next;
-                match (self.head) {
+                match self.head {
                     Some(ref mut link) => {
                         link.prev = ptr::null_mut();
                     },
@@ -179,11 +179,26 @@ mod test {
 
     #[test]
     fn basics() {
+        println!("ENTER Test basics ");
         let mut list = List::new();
-        list.add_front(1);
-        list.add_front(2);
-        list.add_front(3);
+        //list.add_front(1);
+        //list.add_front(2);
+        //list.add_front(3);
+        list.add_back(1);
+        list.add_back(2);
+        list.add_back(3);
+        assert_eq!(list.remove_front(), Some(1));
+        assert_eq!(list.remove_front(), Some(2));
+        assert_eq!(list.remove_front(), Some(3));
+        //assert_eq!(list.remove_front(), Some(2));
+        assert_eq!(list.remove_front(), None);
+        println!("Test basics After None");
+        assert_eq!(list.remove_front(), None);
+        list.add_back(1);
+        list.add_back(2);
+        list.add_back(3);
         assert_eq!(2,2);
+        println!("Test basics complete");
     }
 
 }
