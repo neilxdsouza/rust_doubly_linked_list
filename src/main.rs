@@ -124,6 +124,49 @@ impl List {
         //}
     }
 
+    pub fn add_back(&mut self, data: i32) {
+        let n = Node::new(data);
+        if self.tail.is_null() {
+            let mut l = Box::new(Link {
+                node: n,
+                next: None,
+                prev: ptr::null_mut(),
+            });
+            let raw_tail: *mut _ = &mut * l;
+            self.head = Some(l);
+            self.tail = raw_tail;
+        } else {
+            let mut l = Box::new(Link {
+                node: n,
+                next: None,
+                prev: self.tail,
+            });
+            let raw_tail: *mut Link = &mut * l;
+            unsafe {
+                (*self.tail).next = Some(l);
+            }
+            self.tail = raw_tail;
+        }
+    }
+
+    pub fn remove_front(&mut self) -> Option<i32> {
+        let prev_head = mem::replace(&mut self.head, None);
+        match prev_head {
+            None => None,
+            Some(link) => {
+                self.head = link.next;
+                match (self.head) {
+                    Some(ref mut link) => {
+                        link.prev = ptr::null_mut();
+                    },
+                    None => {
+                    }
+                }
+                Some(link.node.data)
+            }
+        }
+    }
+
     fn print() {
 
     }
