@@ -167,6 +167,29 @@ impl List {
         }
     }
 
+    pub fn remove_back(&mut self) -> Option<i32> {
+        if self.tail.is_null() {
+            None
+        } else {
+            let mut current_tail_node: & mut Link ;
+            unsafe {
+                current_tail_node= &mut *self.tail;
+            }
+            if current_tail_node.prev.is_null() {
+                self.tail = ptr::null_mut();
+            } else {
+                self.tail = current_tail_node.prev;
+            }
+            //match current_tail_node {
+            //    None => None,
+            //    Some(ref node) => {
+            //        Some (node.data)
+            //    }
+            //}
+            Some(current_tail_node.node.data)
+        }
+    }
+
     fn print() {
 
     }
@@ -199,6 +222,20 @@ mod test {
         list.add_back(3);
         assert_eq!(2,2);
         println!("Test basics complete");
+    }
+
+    #[test]
+    fn test_add_front_remove_back() {
+        println!("ENTER Test basics ");
+        let mut list = List::new();
+        list.add_front(1);
+        list.add_front(2);
+        list.add_front(3);
+        assert_eq!(list.remove_back(), Some(1));
+        assert_eq!(list.remove_back(), Some(2));
+        assert_eq!(list.remove_back(), Some(3));
+        //assert_eq!(list.remove_front(), So1e(2));
+        assert_eq!(list.remove_back(), None);
     }
 
 }
