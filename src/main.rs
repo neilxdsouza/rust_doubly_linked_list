@@ -280,6 +280,20 @@ mod test {
         assert_eq!(list.remove_back(), None);
     }
 
+    #[test]
+    fn test_add_back_remove_back() {
+        println!("ENTER test_add_front_remove_back ");
+        let mut list = List::new();
+        list.add_back(1);
+        list.add_back(2);
+        list.add_back(3);
+        assert_eq!(list.remove_back(), Some(3));
+        assert_eq!(list.remove_back(), Some(2));
+        assert_eq!(list.remove_back(), Some(1));
+        assert_eq!(list.remove_back(), None);
+        assert_eq!(list.remove_back(), None);
+    }
+
 }
 
 /*
