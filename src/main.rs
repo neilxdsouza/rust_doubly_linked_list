@@ -62,9 +62,18 @@ impl List {
                 let mut l = Box::new(Link {
                     node:n,
                     next: mem::replace(&mut self.head, None),
-                    prev: raw_prev_head
-                    //prev: ptr::null_mut()
+                    //prev: raw_prev_head
+                    prev: ptr::null_mut()
                 });
+                let raw_new_head: * mut Link = &mut * l ;
+                let mut prev_head:  &mut Option<Box<Link>>  = &mut l.next;
+
+                match prev_head {
+                    None => {},
+                    Some (ref mut prev_head) => {
+                        prev_head.prev =  raw_new_head;
+                    }
+                }
                 self.head = Some(l);
                 //l.next = Some(Box::new(boxed_link.node));
                 //unsafe {
@@ -177,8 +186,23 @@ impl List {
             }
             if current_tail_node.prev.is_null() {
                 self.tail = ptr::null_mut();
+                self.head = None;
             } else {
                 self.tail = current_tail_node.prev;
+                let mut new_tail_node: & mut Link ;
+                unsafe {
+                    new_tail_node = &mut *current_tail_node.prev;
+                }
+                //match new_tail_node {
+                //    None => {},
+                //    Some (ref mut  link) => {
+                //        link.next = None;
+                //    }
+                //}
+                new_tail_node.next = None;
+
+                
+                // self.tail = current_tail_node.prev;
             }
             //match current_tail_node {
             //    None => None,
@@ -225,8 +249,26 @@ mod test {
     }
 
     #[test]
+    fn test_add_front_remove_front() {
+        println!("ENTER test_add_front_remove_front ");
+        let mut list = List::new();
+        list.add_front(1);
+        list.add_front(2);
+        list.add_front(3);
+        //assert_eq!(list.remove_back(), Some(1));
+        //assert_eq!(list.remove_back(), Some(2));
+        //assert_eq!(list.remove_back(), Some(3));
+        assert_eq!(list.remove_front(), Some(3));
+        assert_eq!(list.remove_front(), Some(2));
+        assert_eq!(list.remove_front(), Some(1));
+        assert_eq!(list.remove_front(), None);
+        assert_eq!(list.remove_front(), None);
+        //assert_eq!(list.remove_back(), None);
+    }
+
+    #[test]
     fn test_add_front_remove_back() {
-        println!("ENTER Test basics ");
+        println!("ENTER test_add_front_remove_back ");
         let mut list = List::new();
         list.add_front(1);
         list.add_front(2);
@@ -234,7 +276,7 @@ mod test {
         assert_eq!(list.remove_back(), Some(1));
         assert_eq!(list.remove_back(), Some(2));
         assert_eq!(list.remove_back(), Some(3));
-        //assert_eq!(list.remove_front(), So1e(2));
+        assert_eq!(list.remove_back(), None);
         assert_eq!(list.remove_back(), None);
     }
 
